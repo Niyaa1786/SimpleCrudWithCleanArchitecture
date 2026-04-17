@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="D:/Archives/ASP API/SimpleCrudWithCleanArchitecture/SimpleCrudWithCleanArchitecture/Api.csproj" />
+  <Project Path="SimpleCrud.Application/SimpleCrud.Application.csproj" Id="8440d915-5e22-477c-98b9-3f6261850423" />
+  <Project Path="SimpleCrud.Domain/SimpleCrud.Domain.csproj" Id="50f218c8-ad22-41d7-96f3-f69c9af0840b" />
+  <Project Path="SimpleCrud.Infrastructure/SimpleCrud.Infrastructure.csproj" Id="a713f629-c4fc-4919-ba2e-a4a5b9cbe78c" />
+  <Project Path="SimpleCrudWithCleanArchitecture/SimpleCrud.Api.csproj" />
 </Solution>
