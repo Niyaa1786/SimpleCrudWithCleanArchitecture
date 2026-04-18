@@ -7,8 +7,8 @@ namespace SimpleCrud.Domain.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task<Category> GetByIdAsync(Guid id);
-        Task<IEnumerable<Category>> GetAllAsync();
+        Task<Category> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default);
         void Add(Category category);
         void Update(Category category);
         void Delete(Guid id);
