@@ -21,7 +21,8 @@ namespace SimpleCrud.Domain.Entities
 
         public void Update(string name)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("Name cannot be null or empty");
             
             Name = name;
         }
