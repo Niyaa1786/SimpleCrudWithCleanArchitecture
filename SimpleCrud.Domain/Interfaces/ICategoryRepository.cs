@@ -11,6 +11,6 @@ namespace SimpleCrud.Domain.Interfaces
         Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default);
         void Add(Category category);
         void Update(Category category);
-        void Delete(Guid id);
+        void Delete(Category category);
     }
 }
