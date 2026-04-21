@@ -1,4 +1,5 @@
 ﻿using SimpleCrud.Application.DTOs;
+using SimpleCrud.Application.Exceptions;
 using SimpleCrud.Application.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace SimpleCrud.Application.UseCases.Categories
         public async Task<CategoryDto> ExecuteAsync(Guid id, string name, CancellationToken cancellationToken = default)
         {
             var category = await _unitOfWork.Categories.GetByIdAsync(id, cancellationToken);
-            if (category == null) return null;
+            if (category == null) throw new NotFoundException($"Category with ID {id} not found.");
 
             category.Update(name);
             _unitOfWork.Categories.Update(category);
