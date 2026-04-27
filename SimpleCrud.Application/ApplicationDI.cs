@@ -14,18 +14,21 @@ namespace SimpleCrud.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            // Register Category use cases
             services.AddScoped<CreateCategory>();
             services.AddScoped<GetAllCategories>();
             services.AddScoped<GetCategoryById>();
             services.AddScoped<UpdateCategory>();
             services.AddScoped<DeleteCategory>();
 
+            // Register Product use cases
             services.AddScoped<CreateProduct>();
             services.AddScoped<GetAllProducts>();
             services.AddScoped<GetProductById>();
             services.AddScoped<GetAllProductsByCategory>();
             services.AddScoped<UpdateProduct>();
             services.AddScoped<DeleteProduct>();
+
             // Register all validators in the assembly
             services.AddValidatorsFromAssemblyContaining<IValidatorMarker>();
             return services;

@@ -1,4 +1,6 @@
-﻿using SimpleCrud.Application.DTOs;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using SimpleCrud.Application.DTOs;
 using SimpleCrud.Application.DTOs.Request;
 using SimpleCrud.Application.Exceptions;
 using SimpleCrud.Application.Interfaces;
@@ -10,13 +12,23 @@ namespace SimpleCrud.Application.UseCases.Products
     public class CreateProduct
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CreateProduct(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+        private readonly IValidator<CreateProductRequest> _validator;
+        public CreateProduct(IUnitOfWork unitOfWork, IValidator<CreateProductRequest> validator)
+        {
+            _unitOfWork = unitOfWork;
+            _validator = validator;
+        }
 
         public async Task<ProductDto> ExecuteAsync(CreateProductRequest request, CancellationToken cancellationToken = default)
         {
+            _validator.ValidateAndThrow(request);
             var category = await _unitOfWork.Categories.GetByIdAsync(request.CategoryId, cancellationToken);
+
             if(category == null)
-                throw new NotFoundException("Category not found.");
+            {
+                var failure = new ValidationFailure(nameof(request.CategoryId), $"Category with Id {request.CategoryId} does not exist.");
+                throw new ValidationException(new[] { failure });
+            }
 
             var product = new Product(request.Name, request.Price, request.CategoryId);
             _unitOfWork.Products.Add(product);

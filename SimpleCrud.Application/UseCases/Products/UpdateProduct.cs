@@ -1,4 +1,5 @@
-﻿using SimpleCrud.Application.DTOs;
+﻿using FluentValidation;
+using SimpleCrud.Application.DTOs;
 using SimpleCrud.Application.DTOs.Request;
 using SimpleCrud.Application.Exceptions;
 using SimpleCrud.Application.Interfaces;
@@ -11,10 +12,16 @@ namespace SimpleCrud.Application.UseCases.Products
     public class UpdateProduct
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UpdateProduct(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+        private readonly IValidator<UpdateProductRequest> _validator;
+        public UpdateProduct(IUnitOfWork unitOfWork, IValidator<UpdateProductRequest> validator)
+        {
+            _unitOfWork = unitOfWork;
+            _validator = validator;
+        }
 
         public async Task<ProductDto> ExecuteAsync(Guid id, UpdateProductRequest request, CancellationToken cancellationToken)
         {
+            _validator.ValidateAndThrow(request);
             var product = await _unitOfWork.Products.GetByIdAsync(id, cancellationToken);
             if(product == null) throw new NotFoundException($"Product with id {id} not found.");
 

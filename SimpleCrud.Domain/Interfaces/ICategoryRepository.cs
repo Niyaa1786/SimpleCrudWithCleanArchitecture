@@ -9,6 +9,8 @@ namespace SimpleCrud.Domain.Interfaces
     {
         Task<Category> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<bool> ExistByNameAsync(string name,CancellationToken cancellationToken = default);
+
         void Add(Category category);
         void Update(Category category);
         void Delete(Category category);
