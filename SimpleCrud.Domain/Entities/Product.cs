@@ -10,7 +10,7 @@ namespace SimpleCrud.Domain.Entities
         public string Name { get; private set; } = string.Empty;
         public decimal Price { get; private set; }
         public Guid CategoryId { get; private set; }
-        public Category Category { get; private set; }
+        public Category? Category { get; private set; }
 
         public Product(string name, decimal price, Guid categoryId)
         {
