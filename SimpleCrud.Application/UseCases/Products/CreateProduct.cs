@@ -32,7 +32,7 @@ namespace SimpleCrud.Application.UseCases.Products
 
             var product = new Product(request.Name, request.Price, request.CategoryId);
             _unitOfWork.Products.Add(product);
-            await _unitOfWork.SaveChangeAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new ProductDto
             {

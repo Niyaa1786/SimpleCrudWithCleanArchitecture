@@ -27,7 +27,7 @@ namespace SimpleCrud.Application.UseCases.Products
 
             product.Update(request.Name, request.Price, request.CategoryId);
             _unitOfWork.Products.Update(product);
-            await _unitOfWork.SaveChangeAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return new ProductDto
             {
                 Id = product.Id,

@@ -28,7 +28,7 @@ namespace SimpleCrud.Application.UseCases.Categories
 
             category.Update(name);
             _unitOfWork.Categories.Update(category);
-            await _unitOfWork.SaveChangeAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new CategoryDto
             {

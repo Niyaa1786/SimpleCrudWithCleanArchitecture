@@ -17,7 +17,7 @@ namespace SimpleCrud.Application.UseCases.Products
             if (product == null) return false;
 
             _unitOfWork.Products.Delete(product);
-            await _unitOfWork.SaveChangeAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return true;
         }

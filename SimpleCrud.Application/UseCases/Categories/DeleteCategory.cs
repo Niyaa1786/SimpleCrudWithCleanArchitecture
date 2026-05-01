@@ -16,7 +16,7 @@ namespace SimpleCrud.Application.UseCases.Categories
             if (category == null) return false;
 
             _unitOfWork.Categories.Delete(category);
-            await _unitOfWork.SaveChangeAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

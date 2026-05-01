@@ -35,7 +35,7 @@ using SimpleCrud.Application.DTOs;
                 var category = new Category(request.Name);
 
                 _unitOfWork.Categories.Add(category);
-                await _unitOfWork.SaveChangeAsync(cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return new CategoryDto
                 {
