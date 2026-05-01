@@ -5,11 +5,11 @@ using System.Text;
 
 namespace SimpleCrud.Application.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         public IProductRepository Products { get; }
         public ICategoryRepository Categories { get; }
 
-        public Task<int> SaveChangeAsync(CancellationToken cancellationToken = default);
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

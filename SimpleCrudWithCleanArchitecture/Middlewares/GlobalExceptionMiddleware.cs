@@ -28,18 +28,18 @@ namespace SimpleCrud.Api.Middlewares
 
                 var statusCode = HttpStatusCode.InternalServerError;
                 var message = "An unexpected error occurred.";
-                Dictionary<string, string[]> errors = null;
+                Dictionary<string, string[]> errors = null!;
 
                 if (ex is NotFoundException)
                 {
                     statusCode = HttpStatusCode.NotFound;
                     message = ex.Message;
                 }
-                else if(ex is ValidationException error)
+                else if(ex is ValidationException validateError)
                 {
                     statusCode = HttpStatusCode.BadRequest;
                     message = "Validation Failed";
-                    errors = error.Errors
+                    errors = validateError.Errors
                         .GroupBy(x => x.PropertyName)
                         .ToDictionary(
                             x => x.Key,
