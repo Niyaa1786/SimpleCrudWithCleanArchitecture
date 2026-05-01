@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using Serilog;
 using SimpleCrud.Api.Middlewares;
 using SimpleCrud.Application;
@@ -32,6 +33,7 @@ builder.Services.AddApplication();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

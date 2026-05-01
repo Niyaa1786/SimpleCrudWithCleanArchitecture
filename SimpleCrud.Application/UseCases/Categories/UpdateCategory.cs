@@ -20,13 +20,13 @@ namespace SimpleCrud.Application.UseCases.Categories
             _validator = validator;
         }
 
-        public async Task<CategoryDto> ExecuteAsync(Guid id, string name, CancellationToken cancellationToken = default)
+        public async Task<CategoryDto> ExecuteAsync(Guid id, UpdateCategoryRequest request, CancellationToken cancellationToken = default)
         {
-            _validator.ValidateAndThrow(new UpdateCategoryRequest { Name = name });
+            _validator.ValidateAndThrow(request);
             var category = await _unitOfWork.Categories.GetByIdAsync(id, cancellationToken);
             if (category == null) throw new NotFoundException($"Category with ID {id} not found.");
 
-            category.Update(name);
+            category.Update(request.Name);
             _unitOfWork.Categories.Update(category);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

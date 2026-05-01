@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SimpleCrud.Application.Facade;
 using SimpleCrud.Application.UseCases.Categories;
 using SimpleCrud.Application.UseCases.Products;
 using SimpleCrud.Application.Validators;
@@ -29,6 +30,9 @@ namespace SimpleCrud.Application
             services.AddScoped<UpdateProduct>();
             services.AddScoped<DeleteProduct>();
 
+            //Register Facades
+            services.AddScoped<ICategoryFacade,CategoryFacade>();
+            services.AddScoped<IProductFacade,ProductFacade>();
             // Register all validators in the assembly
             services.AddValidatorsFromAssemblyContaining<IValidatorMarker>();
             return services;
