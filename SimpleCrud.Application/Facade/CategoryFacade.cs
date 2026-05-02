@@ -22,7 +22,11 @@ namespace SimpleCrud.Application.Facade
             GetAllCategories getAllCategories,
             GetCategoryById getCategoryById)
         {
-            
+            _createCategory = createCategory;
+            _updateCategory = updateCategory;
+            _deleteCategory = deleteCategory;
+            _getAllCategories = getAllCategories;
+            _getCategoryById = getCategoryById;
         }
         public Task<CategoryDto> CreateAsync(CreateCategoryRequest request, CancellationToken ct)
         {
