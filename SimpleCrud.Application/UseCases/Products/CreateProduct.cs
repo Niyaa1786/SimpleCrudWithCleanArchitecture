@@ -4,6 +4,7 @@ using SimpleCrud.Application.DTOs;
 using SimpleCrud.Application.DTOs.Request;
 using SimpleCrud.Application.Exceptions;
 using SimpleCrud.Application.Interfaces;
+using SimpleCrud.Application.Mapper;
 using SimpleCrud.Domain.Entities;
 
 
@@ -30,18 +31,13 @@ namespace SimpleCrud.Application.UseCases.Products
                 throw new ValidationException(new[] { failure });
             }
 
-            var product = new Product(request.Name, request.Price, request.CategoryId);
+            var product = ProductMapper.ToEntity(request);
+            
             _unitOfWork.Products.Add(product);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                CategoryId = product.CategoryId,
-                CategoryName = category.Name,
-            };
+            var savedProduct = await _unitOfWork.Categories.GetByIdAsync(product.Id, cancellationToken);
+            return ProductMapper.ToDto(product);
         }
     }
 }

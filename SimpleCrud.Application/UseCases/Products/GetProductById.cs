@@ -1,6 +1,7 @@
 ﻿using SimpleCrud.Application.DTOs;
 using SimpleCrud.Application.Exceptions;
 using SimpleCrud.Application.Interfaces;
+using SimpleCrud.Application.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,14 +17,7 @@ namespace SimpleCrud.Application.UseCases.Products
         {
             var product = await _unitOfWork.Products.GetByIdAsync(id, cancellationToken);
             if (product == null) throw new NotFoundException($"Product with id {id} not found.");
-            return new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                CategoryId = product.CategoryId,
-                CategoryName = product.Category?.Name ?? string.Empty,
-            };
+            return ProductMapper.ToDto(product);
         }
     }
 }

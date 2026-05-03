@@ -3,7 +3,8 @@ using FluentValidation.Results;
 using SimpleCrud.Application.DTOs;
     using SimpleCrud.Application.DTOs.Request;
     using SimpleCrud.Application.Interfaces;
-    using SimpleCrud.Application.Validators;
+using SimpleCrud.Application.Mapper;
+using SimpleCrud.Application.Validators;
     using SimpleCrud.Domain.Entities;
     using System;
     using System.Collections.Generic;
@@ -32,17 +33,12 @@ using SimpleCrud.Application.DTOs;
                     throw new ValidationException(new[] { failure });
                 }
 
-                var category = new Category(request.Name);
+                var category = CategoryMapper.ToEntity(request);
 
                 _unitOfWork.Categories.Add(category);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                return new CategoryDto
-                {
-                    Id = category.Id,
-                    Name = category.Name,
-                    ProductCount = 0
-                };
+                
+                return CategoryMapper.ToDto(category);
             }
         }
     }

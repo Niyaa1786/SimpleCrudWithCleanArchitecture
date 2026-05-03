@@ -3,6 +3,7 @@ using SimpleCrud.Application.DTOs;
 using SimpleCrud.Application.DTOs.Request;
 using SimpleCrud.Application.Exceptions;
 using SimpleCrud.Application.Interfaces;
+using SimpleCrud.Application.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,16 +26,14 @@ namespace SimpleCrud.Application.UseCases.Products
             var product = await _unitOfWork.Products.GetByIdAsync(id, cancellationToken);
             if(product == null) throw new NotFoundException($"Product with id {id} not found.");
 
-            product.Update(request.Name, request.Price, request.CategoryId);
+            var category = await _unitOfWork.Categories.GetByIdAsync(request.CategoryId, cancellationToken);
+            if (category == null) throw new NotFoundException($"Category with id {category!.Id} not found.");
+
+            ProductMapper.ApplyUpdates(request, product);
             _unitOfWork.Products.Update(product);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                CategoryId = product.CategoryId
-            };
+
+            return ProductMapper.ToDto(product);
         }
     }
 }

@@ -3,6 +3,7 @@ using SimpleCrud.Application.DTOs;
 using SimpleCrud.Application.DTOs.Request;
 using SimpleCrud.Application.Exceptions;
 using SimpleCrud.Application.Interfaces;
+using SimpleCrud.Application.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,20 +23,15 @@ namespace SimpleCrud.Application.UseCases.Categories
 
         public async Task<CategoryDto> ExecuteAsync(Guid id, UpdateCategoryRequest request, CancellationToken cancellationToken = default)
         {
-            _validator.ValidateAndThrow(request);
+            _validator.ValidateAndThrow(new UpdateCategoryRequest { Name = request.Name });
             var category = await _unitOfWork.Categories.GetByIdAsync(id, cancellationToken);
             if (category == null) throw new NotFoundException($"Category with ID {id} not found.");
 
-            category.Update(request.Name);
+            CategoryMapper.ApplyUpdates(request,category);
             _unitOfWork.Categories.Update(category);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new CategoryDto
-            {
-                Id = category.Id,
-                Name = category.Name,
-                ProductCount = category.Products.Count(),
-            };
+            return CategoryMapper.ToDto(category);
         }
     }
 }

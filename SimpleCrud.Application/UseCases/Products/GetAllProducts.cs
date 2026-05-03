@@ -1,5 +1,6 @@
 ﻿using SimpleCrud.Application.DTOs;
 using SimpleCrud.Application.Interfaces;
+using SimpleCrud.Application.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,15 +15,8 @@ namespace SimpleCrud.Application.UseCases.Products
         public async Task<IEnumerable<ProductDto>> ExecuteAsync(CancellationToken cancellationToken = default)
         {
             var products = await _unitOfWork.Products.GetAllAsync(cancellationToken);
-            
-            return products.Select(p => new ProductDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price,
-                CategoryId = p.CategoryId,
-                CategoryName = p.Category?.Name ?? string.Empty,
-            });
+
+            return products.Select(p => ProductMapper.ToDto(p));
         }
     }
 }
