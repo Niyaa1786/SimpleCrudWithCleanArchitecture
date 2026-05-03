@@ -11,6 +11,7 @@ namespace SimpleCrud.Application.Mapper
     [Mapper]
     public static partial class ProductMapper
     {
+        [MapProperty(nameof(Product.Category.Name),nameof(ProductDto.CategoryName))]
         public static partial ProductDto ToDto(Product product);
 
         public static Product ToEntity(CreateProductRequest request)

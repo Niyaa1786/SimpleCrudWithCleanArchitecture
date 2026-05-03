@@ -36,8 +36,8 @@ namespace SimpleCrud.Application.UseCases.Products
             _unitOfWork.Products.Add(product);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var savedProduct = await _unitOfWork.Categories.GetByIdAsync(product.Id, cancellationToken);
-            return ProductMapper.ToDto(product);
+            var savedProduct = await _unitOfWork.Products.GetByIdAsync(product.Id, cancellationToken);
+            return ProductMapper.ToDto(savedProduct!);
         }
     }
 }
