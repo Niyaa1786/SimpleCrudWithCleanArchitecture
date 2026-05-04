@@ -27,7 +27,7 @@ namespace SimpleCrud.Application.UseCases.Products
             if(product == null) throw new NotFoundException($"Product with id {id} not found.");
 
             var category = await _unitOfWork.Categories.GetByIdAsync(request.CategoryId, cancellationToken);
-            if (category == null) throw new NotFoundException($"Category with id {category!.Id} not found.");
+            if (category == null) throw new NotFoundException($"Category with id {request!.CategoryId} not found.");
 
             ProductMapper.ApplyUpdates(request, product);
             _unitOfWork.Products.Update(product);
