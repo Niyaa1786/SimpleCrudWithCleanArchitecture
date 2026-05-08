@@ -23,7 +23,7 @@ namespace SimpleCrud.Application.UseCases.Categories
 
         public async Task<CategoryDto> ExecuteAsync(Guid id, UpdateCategoryRequest request, CancellationToken cancellationToken = default)
         {
-            _validator.ValidateAndThrow(new UpdateCategoryRequest { Name = request.Name });
+            _validator.ValidateAndThrow(request);
             var category = await _unitOfWork.Categories.GetByIdAsync(id, cancellationToken);
             if (category == null) throw new NotFoundException($"Category with ID {id} not found.");
 
