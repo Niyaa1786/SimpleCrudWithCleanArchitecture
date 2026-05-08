@@ -24,7 +24,6 @@ namespace SimpleCrud.Infrastructure.Repositories
 
         public async Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
             => await _context.Categories
-                .AsNoTracking()
                 .Include(e => e.Products)
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
