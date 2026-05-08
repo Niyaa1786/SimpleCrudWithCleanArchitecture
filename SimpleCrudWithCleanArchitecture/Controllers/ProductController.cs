@@ -55,7 +55,7 @@ namespace SimpleCrud.Api.Controllers
         {
             var updatedProduct = await _productFacade.UpdateAsync(id,request,ct);
             var res = ApiResponse<ProductDto>.Ok(updatedProduct, "Update Successfully");
-            return Ok(updatedProduct);
+            return Ok(res);
         }
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
@@ -66,8 +66,8 @@ namespace SimpleCrud.Api.Controllers
                 var errorResponse = ApiResponse<object>.Error("Product Not Found");
                 return NotFound();
             }
-            var res = ApiResponse<object>.Ok(null, "Delete Successfully");
-            return NoContent();
+            var res = ApiResponse<object>.Ok(null!, "Delete Successfully");
+            return Ok(res);
         }
     }
 }
