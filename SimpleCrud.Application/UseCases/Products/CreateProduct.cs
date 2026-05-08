@@ -25,11 +25,8 @@ namespace SimpleCrud.Application.UseCases.Products
             _validator.ValidateAndThrow(request);
             var category = await _unitOfWork.Categories.GetByIdAsync(request.CategoryId, cancellationToken);
 
-            if(category == null)
-            {
-                var failure = new ValidationFailure(nameof(request.CategoryId), $"Category with Id {request.CategoryId} does not exist.");
-                throw new ValidationException(new[] { failure });
-            }
+            if (category == null) throw new NotFoundException($"Category with id {request!.CategoryId} not found.");
+
 
             var product = ProductMapper.ToEntity(request);
             

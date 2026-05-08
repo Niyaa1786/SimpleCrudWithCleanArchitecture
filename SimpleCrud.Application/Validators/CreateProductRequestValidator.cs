@@ -13,6 +13,7 @@ namespace SimpleCrud.Application.Validators
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("Name is required.");
             RuleFor(p => p.Price)
+                .NotEmpty().WithMessage("Price is required")
                 .GreaterThan(0).WithMessage("Price must be greater than zero.");
             RuleFor(p => p.CategoryId)
                 .NotEmpty().WithMessage("CategoryId is required.");

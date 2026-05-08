@@ -1,32 +1,40 @@
+using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 using Serilog;
-using SimpleCrud.Api.Middlewares;
+using Serilog.Events;
+using SimpleCrud.Api.Handlers;
+using SimpleCrud.Api.Responses;
 using SimpleCrud.Application;
 using SimpleCrud.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseSerilog();
-
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.Console()
-    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+builder.Services.AddSerilog();
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        // THẦN CHÚ: Tắt cái Filter tự động chặn lỗi Model của ASP.NET
+        options.SuppressModelStateInvalidFilter = true;
+    });
+;// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddExceptionHandler<ExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -40,6 +48,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseExceptionHandler();
 
 app.Run();
