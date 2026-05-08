@@ -30,7 +30,7 @@ namespace SimpleCrud.Api.Controllers
         [HttpGet("by-category/{id}")]
         public async Task<IActionResult> GetAllByCategory(Guid id,CancellationToken ct)
         {
-            var products = await _productFacade.GetAllAsync(ct);
+            var products = await _productFacade.GetAllByCategory(id, ct);
             var res = ApiResponse<IEnumerable<ProductDto>>.Ok(products);
             return Ok(res);
         }
