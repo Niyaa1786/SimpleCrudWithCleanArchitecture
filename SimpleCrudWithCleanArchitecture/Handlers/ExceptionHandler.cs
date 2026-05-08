@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using SimpleCrud.Api.Responses;
 using SimpleCrud.Application.Exceptions;
 using System.Net;
+using System.Text.Json;
 
 namespace SimpleCrud.Api.Handlers
 {
@@ -33,12 +34,18 @@ namespace SimpleCrud.Api.Handlers
                 message = "Validation Failed";
                 errors = ve.Errors
                     .GroupBy(e => e.PropertyName)
-                    .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
+                    .ToDictionary(g => JsonNamingPolicy.CamelCase.ConvertName(g.Key), g => g.Select(e => e.ErrorMessage).ToArray());
             }
             else if(exception is ArgumentException ae)
             {
                 statusCode = (int)HttpStatusCode.BadRequest;
                 message = "Invalid argument";
+            }
+            else if (exception is JsonException jsonEx)
+            {
+                statusCode = (int)HttpStatusCode.BadRequest;
+                message = "Invalid JSON format. Please check data types.";
+                errors = jsonEx.Message;
             }
 
             var response = ApiResponse<object>.Error(message, errors);

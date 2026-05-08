@@ -6,6 +6,7 @@ using SimpleCrud.Api.Handlers;
 using SimpleCrud.Api.Responses;
 using SimpleCrud.Application;
 using SimpleCrud.Infrastructure;
+using System.Text.Json;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -17,12 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSerilog();
 
 builder.Services.AddControllers()
-    .ConfigureApiBehaviorOptions(options =>
+    .AddJsonOptions(options =>
     {
-        // THẦN CHÚ: Tắt cái Filter tự động chặn lỗi Model của ASP.NET
-        options.SuppressModelStateInvalidFilter = true;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
-;// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddApplication();
